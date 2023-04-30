@@ -16,36 +16,17 @@ impl Job for HelloJob {
         let to_print = if let Some(i) = input {
             format!("Hello {}", i)
         } else {
-            panic!("UH OH!");
-            format!("Hello World")
+            "Hello World".to_string()
         };
         println!("{}", to_print);
         Ok(None)
     }
 }
 
-// #[derive(Copy, Clone)]
-// struct Example;
-
-// #[async_trait]
-// impl ClientMiddleware for Example {
-//     async fn transform(
-//         &self,
-//         from: Box<dyn Job>,
-//         input: Option<String>,
-//     ) -> Result<(Box<dyn Job>, Option<String>), CwabError> {
-//         match from.name() {
-//             "HelloJob" => Ok((from, Some("override".to_string()))),
-//             _ => Ok((from, input)),
-//         }
-//     }
-// }
-
 #[tokio::main]
 async fn main() -> Result<()> {
     let config = Config::new(None)?;
     let cwab = Cwab::new(&config)?;
-    // cwab.register_middleware(Example);
     let mut worker = cwab.worker();
     worker.register(HelloJob);
 
